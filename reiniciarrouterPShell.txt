@@ -1,0 +1,17 @@
+while(10 –gt 5)
+{
+if(Test-Connection -Cn www.google.com -BufferSize 16 -Count 1 -ea 0 -quiet)
+{
+ echo "***Hay internet***"
+}else{
+     $secpasswd = ConvertTo-SecureString "1234" -AsPlainText -Force
+     $mycreds = New-Object System.Management.Automation.PSCredential ("1234", $secpasswd)
+     echo "***No internet connection***"
+     echo "---Attempting to connect to router---"
+     New-SSHSession -ComputerName "192.168.1.1" -Credential $mycreds
+     echo "---Reiniciando router---"
+     Invoke-SSHCommand -Index 0 -Command "reboot"
+     Remove-SSHSession -SessionId 0
+ }
+ Start-Sleep -Seconds 300
+ }
